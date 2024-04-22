@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Datos</title>
+    <link rel="stylesheet" href="/static/css/b.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Datos</h2>
+        <button id="cargar-datos-btn" class="btn btn-primary mb-3">Cargar Datos</button>
+        <table id="datos-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>País</th>
+                    <th>Código de País</th>
+                    <th>Nombre del Indicador</th>
+                    <th>Código del Indicador</th>
+                    <th>Año</th>
+                    <th>Dato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se cargarán los datos -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('cargar-datos-btn').addEventListener('click', function() {
+            // Mostrar animación de carga
+            document.getElementById('cargar-datos-btn').innerText = 'Cargando...';
+
+            // Llamada a la API para obtener todos los datos
+            fetch('/todos_los_datos')
+                .then(response => response.json())
+                .then(data => {
+                    // Ocultar animación de carga
+                    document.getElementById('cargar-datos-btn').innerText = 'Cargar Datos';
+                    cargarDatos(data);
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos:', error);
+                    // Mostrar mensaje de error al usuario
+                    alert('Error al cargar los datos. Por favor, inténtelo de nuevo.');
+                    // Restaurar texto del botón
+                    document.getElementById('cargar-datos-btn').innerText = 'Cargar Datos';
+                });
+        });
+
+        // Función para cargar los datos en la tabla
+        function cargarDatos(datos) {
+            var tabla = document.getElementById('datos-table').getElementsByTagName('tbody')[0];
+            tabla.innerHTML = ''; // Limpiar tabla antes de cargar datos nuevos
+            datos.forEach(function(fila) {
+                var nuevaFila = tabla.insertRow(tabla.rows.length);
+                nuevaFila.insertCell(0).innerHTML = fila['Pais'];
+                nuevaFila.insertCell(1).innerHTML = fila['Codigo_Pais'];
+                nuevaFila.insertCell(2).innerHTML = fila['Nombre_Indicador'];
+                nuevaFila.insertCell(3).innerHTML = fila['Codigo_Indicador'];
+                nuevaFila.insertCell(4).innerHTML = fila['Anio'];
+                nuevaFila.insertCell(5).innerHTML = fila['Valor'];
+            });
+        }
+    </script>
+</body>
+</html>
