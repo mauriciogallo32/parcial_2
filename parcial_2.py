@@ -4,7 +4,7 @@ import pandas as pd
 app = Flask(__name__)
 
 # Cargar los datos desde el archivo Excel
-df = pd.read_excel('API_SH.IMM.MEAS_DS2_en_excel_v2_50281.xls', sheet_name='Data', header=3, index_col=[0, 1, 2, 3])
+df = pd.read_excel('vacunas.xls', sheet_name='Data', header=3, index_col=[0, 1, 2, 3])
 
 @app.route('/')
 def index():
